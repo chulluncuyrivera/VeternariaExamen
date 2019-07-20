@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+
+    </h:head>
+    <h:body>
+        <ui:composition template="./TemplateVeterinaria.xhtml">
+            <ui:define name="content">
+                <p:growl id="msj" autoUpdate="true"/>
+                <div align="center">
+                    <h:form id="formcliente">
+                        <p:panel style="width: 40%">
+                            <f:facet name="header">
+                                <p:column>
+                                    <p:outputLabel value="Reserva Cita"/>
+                                </p:column>
+                            </f:facet>
+                            <p:panelGrid>
+
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="ID"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText value="#{reservaCitaBeans.reservacita.idReservaCita}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Fecha"/>
+                                    </p:column>
+                                    <p:column>
+                                       
+                                        <p:calendar value="#{reservaCitaBeans.reservacita.fecha}" locale="es"/>
+                                            
+                                            
+                       
+                                        
+                                    </p:column>
+                                </p:row>
+
+                              
+
+                            </p:panelGrid>
+                            <p:commandButton rendered="#{!reservaCitaBeans.banderaSelect}"  value="Guardar" action="#{reservaCitaBeans.guardarReservaCita()}" update=":Data:dataTableCliente,:formcliente"/>
+                            <p:commandButton value="Nuevo" action="#{reservaCitaBeans.limpiar()}" update=":Data:dataTableCliente,:formcliente"/>
+                            <p:commandButton rendered="#{reservaCitaBeans.banderaSelect}"  value="Actualizar" action="#{reservaCitaBeans.actualizarReservaCita()}" update=":Data:dataTableCliente,:formcliente"/>
+                        </p:panel>
+                    </h:form>
+
+                    <h:form id="Data">
+                        <p:dataTable rowKey="#{reservacita.idReservaCita}" selection="#{reservaCitaBeans.reservacita}" selectionMode="single" id="dataTableCliente" var="reservacita" value="#{reservaCitaBeans.listarReservaCita()}" style="width: 80%">
+                            <p:ajax event="rowSelect" update=":formcliente" listener="#{reservaCitaBeans.selectBandera()}"/>
+                            <p:column headerText="Código">
+                                <p:outputLabel value="#{reservacita.idReservaCita}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Fecha">
+                                <p:outputLabel value="#{reservacita.fecha}"/>
+                            </p:column>
+
+                            <p:column headerText="Accion">
+                                <p:commandButton value="Eliminar" action="#{reservaCitaBeans.eliminarReservaCita(reservacita)}" update=":Data:dataTableCliente,:formcliente"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                </div>
+
+            </ui:define>
+
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
